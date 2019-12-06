@@ -112,7 +112,7 @@ class Trainer(object):
                 print('Episode: {} t: {} Reward: {:.3f}'.format(
                     episode, t_alive, total_reward))
                # danger
-                mp4list = glob.glob('./video_XXX/env_{}.mp4'.format(episode))
+                mp4list = glob.glob('./video_XXX/*.mp4')
                 if len(mp4list) > 0:
                     latest = mp4list[0]
                     latest_timestamp = os.path.getmtime(mp4list[0])
@@ -127,7 +127,6 @@ class Trainer(object):
                                     loop controls style="height: 400px;">
                                     <source src="data:video/mp4;base64,{0}" type="video/mp4" />
                                  </video>'''.format(encoded.decode('ascii'))))
-                        
                 #end danger
                 else: 
                     print("Could not find video")
