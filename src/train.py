@@ -8,9 +8,13 @@ Trainer class.
     [1] Hado van Hasselt, Arthur Guez and David Silver.
         Deep Reinforcement Learning with Double Q-learning. arXiv:1509.06461
 """
-
+import io
 import os
+import base64
 import numpy as np
+
+from IPython.display import HTML
+from IPython import display as ipythondisplay
 
 from ple import PLE
 from ple.games.flappybird import FlappyBird
@@ -106,6 +110,26 @@ class Trainer(object):
                 agent.restore_epsilon()
                 print('Episode: {} t: {} Reward: {:.3f}'.format(
                     episode, t_alive, total_reward))
+               # danger
+                mp4list = glob.glob('.video_XXX/env_{}.mp4'.format(episode))
+                if len(mp4list) > 0:
+                    latest = mp4list[0]
+                    latest_timestamp = os.path.getmtime(mp4list[0])
+                    for mp4 in mp4list:
+                        ts = os.path.getmtime(mp4)
+                        if(ts > latest_timestamp):
+                            latest_timestamp = ts
+                            latest = mp4 
+                    video = io.open(latest, 'r+b').read()
+                    encoded = base64.b64encode(video)
+                    ipythondisplay.display(HTML(data='''<video alt="test" autoplay 
+                                    loop controls style="height: 400px;">
+                                    <source src="data:video/mp4;base64,{0}" type="video/mp4" />
+                                 </video>'''.format(encoded.decode('ascii'))))
+                        
+                #end danger
+                else: 
+                    print("Could not find video")
 
             if episode > self.hparams.initial_observe_episode and train:
                 # save model
