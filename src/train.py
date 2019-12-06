@@ -11,6 +11,7 @@ Trainer class.
 import io
 import os
 import base64
+import glob
 import numpy as np
 
 from IPython.display import HTML
